@@ -1,0 +1,9 @@
+[wokwi]
+version = 1
+firmware = 'firmware/esp32-mixer.elf'
+elf = 'firmware/esp32-mixer.elf'
+rfc2217ServerPort = 4000
+
+[[chip]]
+name = 'mixer'
+binary = 'simulation/build/mixer.chip.wasm'

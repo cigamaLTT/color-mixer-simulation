@@ -1,0 +1,23 @@
+{
+  "name": "Color Mixer - Closed Loop Plant",
+  "author": "Color Mixer Project",
+  "pins": [
+    "VCC", "GND", "PUMP_GREEN", "PUMP_SKIN", "PUMP_BLUE", "STIR_GREEN", "STIR_SKIN",
+    "STIR_BLUE", "STIR_CUP", "FLOAT_GREEN", "FLOAT_SKIN", "FLOAT_BLUE", "HX_DOUT", "HX_SCK"
+  ],
+  "display": { "width": 760, "height": 520 },
+  "controls": [
+    { "id": "emptyGreen", "label": "Force green tank empty (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "emptySkin", "label": "Force skin tank empty (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "emptyBlue", "label": "Force blue tank empty (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "blockGreen", "label": "Block green pump (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "blockSkin", "label": "Block skin pump (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "blockBlue", "label": "Block blue pump (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "scaleNoiseG", "label": "Scale noise amplitude (+/- g)", "type": "range", "min": 0, "max": 5, "step": 0.1 },
+    { "id": "disconnectScale", "label": "Disconnect HX711 (0/1)", "type": "range", "min": 0, "max": 1, "step": 1 },
+    { "id": "refillSources", "label": "Refill sources (change number to act)", "type": "range", "min": 0, "max": 100, "step": 1 },
+    { "id": "drainReceiver", "label": "Empty receiver (change number to act)", "type": "range", "min": 0, "max": 100, "step": 1 },
+    { "id": "flowMlPerSecond", "label": "Pump flow (mL/s)", "type": "range", "min": 5, "max": 80, "step": 1 },
+    { "id": "cupMassG", "label": "Empty cup mass (g)", "type": "range", "min": 0, "max": 300, "step": 1 }
+  ]
+}

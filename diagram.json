@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Color Mixer Project",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 125, "left": -245, "attrs": {} },
+    { "type": "chip-mixer", "id": "plant", "top": 0, "left": 90,
+      "attrs": { "flowMlPerSecond": "20", "cupMassG": "120", "scaleNoiseG": "0" } }
+  ],
+  "connections": [
+    ["esp:3V3", "plant:VCC", "red", ["h35", "v-160"]],
+    ["esp:GND.1", "plant:GND", "black", ["h25"]],
+    ["esp:D18", "plant:PUMP_GREEN", "green", ["h40"]],
+    ["esp:D19", "plant:PUMP_SKIN", "#ecb094", ["h50"]],
+    ["esp:D21", "plant:PUMP_BLUE", "blue", ["h60"]],
+    ["esp:D22", "plant:STIR_GREEN", "green", ["h70"]],
+    ["esp:D23", "plant:STIR_SKIN", "#ecb094", ["h80"]],
+    ["esp:D25", "plant:STIR_BLUE", "blue", ["h20"]],
+    ["esp:D26", "plant:STIR_CUP", "cyan", ["h30"]],
+    ["esp:D32", "plant:FLOAT_GREEN", "green", ["h-30", "v320"]],
+    ["esp:D33", "plant:FLOAT_SKIN", "#ecb094", ["h-40", "v330"]],
+    ["esp:D34", "plant:FLOAT_BLUE", "blue", ["h-50", "v340"]],
+    ["esp:D35", "plant:HX_DOUT", "purple", ["h-60", "v350"]],
+    ["esp:D27", "plant:HX_SCK", "orange", ["h-70", "v360"]],
+    ["esp:TX0", "$serialMonitor:RX", "", []],
+    ["esp:RX0", "$serialMonitor:TX", "", []]
+  ],
+  "serialMonitor": { "display": "always", "newline": "lf", "convertEol": true }
+}

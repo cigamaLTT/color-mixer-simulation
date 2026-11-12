@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#476a58">
+  <meta name="description" content="Bảng điều khiển và sơ đồ 2D trực tiếp của hệ thống pha trộn tự động.">
+  <title>Mixlab · Trạm pha chế</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23476a58'/%3E%3Cpath d='M17 17v22a8 8 0 0 0 16 0V25a7 7 0 0 1 14 0v22M11 25h12m18 14h12' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-log" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 14 4-4M8.5 15.5l-1 1a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0m1 9a3.5 3.5 0 0 0 5 0l4-4a3.5 3.5 0 0 0-5-5l-1 1"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1.4 7M4 4v6h6"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v17M5 20h14M4 7h16M6 7l-4 8h8L6 7Zm12 0-4 8h8l-4-8Z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3S5 10.2 5 15a7 7 0 0 0 14 0c0-4.8-7-12-7-12Z"/><path d="M9 16a3 3 0 0 0 3 3"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h5l3-8 4 16 3-8h5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M5 3v7m0 4v7M12 3v12m0 4v2M19 3v2m0 4v12M2 10h6m1 5h6m1-10h6"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Đi đến nội dung</a>
+  <aside class="sidebar" aria-label="Điều hướng chính">
+    <a class="brand" href="#overview" aria-label="Mixlab, trang tổng quan">
+      <span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 9v15a6 6 0 0 0 12 0V16a5 5 0 0 1 10 0v15M5 15h8m14 10h8"/></svg></span>
+      <span>mixlab<span class="brand-caption">TRẠM PHA CHẾ</span></span>
+    </a>
+    <div class="nav-label">KHÔNG GIAN LÀM VIỆC</div>
+    <nav class="navigation">
+      <a class="nav-item active" href="#overview" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>Tổng quan<span class="nav-active-dot"></span></a>
+      <a class="nav-item" href="#activity"><svg class="icon"><use href="#i-log"/></svg>Nhật ký hoạt động</a>
+      <button class="nav-item" type="button" data-open-connection><svg class="icon"><use href="#i-link"/></svg>Kết nối thiết bị</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="station-card"><span class="station-icon"><svg class="icon"><use href="#i-sliders"/></svg></span><div><strong>Trạm pha 01</strong><span>3 nguyên liệu · 4 bộ khuấy</span></div></div>
+      <button class="connection-shortcut" type="button" data-open-connection><span class="status-dot" id="sidebar-dot"></span><span id="sidebar-status">Đang kết nối máy chủ</span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <div class="sidebar-version">MIXLAB CONTROL <span>01 / 2D</span></div>
+    </div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb">Không gian làm việc<svg class="icon"><use href="#i-chevron"/></svg><strong>Tổng quan</strong></div><div class="topbar-right"><span class="local-date" id="local-date"></span><button class="top-connection" type="button" data-open-connection><span class="status-dot" id="transport-dot"></span><span id="transport-label">Đang kết nối</span></button></div></header>
+    <main id="main" class="main" tabindex="-1">
+      <section id="overview" aria-labelledby="page-title">
+        <div class="page-heading"><div><div class="eyebrow">TRẠM PHA 3 NGUYÊN LIỆU</div><h1 id="page-title">Tổng quan vận hành<span class="heading-dot">.</span></h1><p>Theo dõi và điều khiển trạm pha chế theo thời gian thực.</p></div><label class="device-picker"><span class="device-picker-icon"><svg class="icon"><use href="#i-sliders"/></svg></span><span><span class="field-eyebrow">THIẾT BỊ</span><select id="device-select" aria-label="Chọn thiết bị"><option value="mixer-01">mixer-01</option></select></span></label></div>
+        <div class="notice" id="connection-notice" role="status"><svg class="icon"><use href="#i-info"/></svg><div><strong id="notice-title">Đang kết nối với máy chủ</strong><span id="notice-detail">Chờ kết nối để nhận trạng thái thiết bị.</span></div><button type="button" data-open-connection>Xem kết nối<svg class="icon"><use href="#i-arrow"/></svg></button></div>
+
+        <div class="metrics" aria-label="Thông số hiện tại">
+          <article class="metric"><div class="metric-label">Khối lượng trên cân<span class="metric-icon green"><svg class="icon"><use href="#i-scale"/></svg></span></div><div class="metric-value"><span id="metric-weight">—</span><span class="metric-unit">g</span></div><div class="metric-note" id="weight-note">Chưa nhận dữ liệu cân</div></article>
+          <article class="metric"><div class="metric-label">Mục tiêu mẻ hiện tại<span class="metric-icon peach"><svg class="icon"><use href="#i-target"/></svg></span></div><div class="metric-value"><span id="metric-target">—</span><span class="metric-unit">g</span></div><div class="metric-note" id="target-note">Từ công thức trên thiết bị</div></article>
+          <article class="metric"><div class="metric-label">Đã định lượng<span class="metric-icon blue"><svg class="icon"><use href="#i-drop"/></svg></span></div><div class="metric-value"><span id="metric-delivered">—</span><span class="metric-unit">g</span><span class="progress-chip" id="metric-progress">— %</span></div><div class="mini-progress"><span id="batch-progress"></span></div></article>
+          <article class="metric"><div class="metric-label">Trạng thái thiết bị<span class="metric-icon neutral"><svg class="icon"><use href="#i-pulse"/></svg></span></div><div class="metric-state" id="metric-state">Chờ thiết bị</div><div class="metric-note state-note"><span class="status-dot" id="device-dot"></span><span id="device-state-note">Chưa có telemetry</span></div></article>
+        </div>
+
+        <div class="operation-grid">
+          <section class="card machine-card" aria-labelledby="machine-title">
+            <div class="card-heading"><div><div class="section-kicker">THEO DÕI THIẾT BỊ</div><h2 id="machine-title">Mô phỏng trạm pha</h2></div><span class="live-badge" id="live-badge"><span class="status-dot"></span><span id="live-label">CHƯA CÓ DỮ LIỆU</span></span></div>
+            <div class="machine-stage not-live" id="machine-stage">
+              <div class="stage-caption"><span class="tiny-cross">+</span>SƠ ĐỒ VẬN HÀNH 2D<span class="stage-caption-right">CHỌN BỘ PHẬN ĐỂ XEM CHI TIẾT</span></div>
+              <svg class="machine-svg" id="machine-svg" viewBox="0 0 920 465" role="group" aria-label="Sơ đồ 3 bồn nguyên liệu, 3 bơm, 4 bộ khuấy và cân">
+                <defs>
+                  <pattern id="grid-dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".65" fill="#d2d9d2"/></pattern>
+                  <linearGradient id="tank-glass" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".5" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity=".5"/></linearGradient>
+                  <linearGradient id="cup-glass" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#edf0eb" stop-opacity=".45"/></linearGradient>
+                  <clipPath id="tank-clip-0"><path d="M89 105v141c0 19 118 19 118 0V105Z"/></clipPath>
+                  <clipPath id="tank-clip-1"><path d="M299 105v141c0 19 118 19 118 0V105Z"/></clipPath>
+                  <clipPath id="tank-clip-2"><path d="M509 105v141c0 19 118 19 118 0V105Z"/></clipPath>
+                  <clipPath id="cup-clip"><path d="m736 352 12 71q35 15 70 0l12-71Z"/></clipPath>
+                </defs>
+                <rect width="920" height="465" fill="url(#grid-dots)" opacity=".65"/>
+                <path d="M36 444H884" stroke="#d7ded5"/>
+                <g class="pipe-lines" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M148 262v55q0 18 18 18h556q20 0 20 18" class="pipe-base"/>
+                  <path d="M358 262v40q0 15 15 15h370q20 0 20 36" class="pipe-base"/>
+                  <path d="M568 262v19q0 18 18 18h180q18 0 18 54" class="pipe-base"/>
+                  <path d="M148 262v55q0 18 18 18h556q20 0 20 18" class="pipe-fluid channel-a" id="pipe-0"/>
+                  <path d="M358 262v40q0 15 15 15h370q20 0 20 36" class="pipe-fluid channel-b" id="pipe-1"/>
+                  <path d="M568 262v19q0 18 18 18h180q18 0 18 54" class="pipe-fluid channel-c" id="pipe-2"/>
+                </g>
+                <g class="machine-component selected" data-component="tank-0" role="button" tabindex="0" aria-label="Bồn A, xanh lá CHINJOO 066, xem trạng thái" aria-pressed="true">
+                  <rect class="component-focus" x="66" y="23" width="166" height="259" rx="15"/>
+                  <text class="tank-eyebrow" x="148" y="43">NGUYÊN LIỆU A</text>
+                  <path d="M89 105v141c0 19 118 19 118 0V105" fill="#e6eee3" fill-opacity=".45"/>
+                  <g clip-path="url(#tank-clip-0)"><rect id="tank-fill-0" class="tank-fill channel-a" x="89" y="263" width="118" height="0"/><ellipse id="tank-surface-0" class="tank-surface channel-a" cx="148" cy="263" rx="59" ry="10" opacity="0"/><path d="M99 103v150" stroke="#fff" stroke-width="7" opacity=".28"/></g>
+                  <path d="M89 105v141c0 19 118 19 118 0V105" fill="url(#tank-glass)" stroke="#91a88b" stroke-width="2"/>
+                  <ellipse cx="148" cy="105" rx="59" ry="12" fill="#f3f6ed" stroke="#91a88b" stroke-width="2"/>
+                  <path d="M106 138h11m-11 30h11m-11 30h11m-11 30h11" class="tank-ticks"/>
+                  <text class="tank-level" id="tank-level-0" x="157" y="194">—<tspan class="tank-percent"> %</tspan></text>
+                  <g class="stirrer" id="stirrer-0"><path d="M148 88v146" class="stirrer-rod"/><g class="stirrer-blade" style="transform-origin:148px 226px"><path d="m130 226 36-6m-36 0 36 12"/></g><rect x="132" y="66" width="32" height="25" rx="6" class="motor-box"/><path d="M142 72v12m7-12v12m7-12v12" class="motor-vents"/><circle cx="172" cy="78" r="4" class="motor-led"/></g>
+                  <rect x="133" y="260" width="30" height="8" rx="3" class="tank-fitting"/>
+                </g>
+                <g class="machine-component" data-component="tank-1" role="button" tabindex="0" aria-label="Bồn B, màu da CHINJOO 046, xem trạng thái" aria-pressed="false">
+                  <rect class="component-focus" x="276" y="23" width="166" height="259" rx="15"/>
+                  <text class="tank-eyebrow" x="358" y="43">NGUYÊN LIỆU B</text>
+                  <path d="M299 105v141c0 19 118 19 118 0V105" fill="#f5e6d8" fill-opacity=".45"/>
+                  <g clip-path="url(#tank-clip-1)"><rect id="tank-fill-1" class="tank-fill channel-b" x="299" y="263" width="118" height="0"/><ellipse id="tank-surface-1" class="tank-surface channel-b" cx="358" cy="263" rx="59" ry="10" opacity="0"/><path d="M309 103v150" stroke="#fff" stroke-width="7" opacity=".28"/></g>
+                  <path d="M299 105v141c0 19 118 19 118 0V105" fill="url(#tank-glass)" stroke="#c9aa8d" stroke-width="2"/>
+                  <ellipse cx="358" cy="105" rx="59" ry="12" fill="#fcf4e9" stroke="#c9aa8d" stroke-width="2"/>
+                  <path d="M316 138h11m-11 30h11m-11 30h11m-11 30h11" class="tank-ticks"/>
+                  <text class="tank-level" id="tank-level-1" x="367" y="194">—<tspan class="tank-percent"> %</tspan></text>
+                  <g class="stirrer" id="stirrer-1"><path d="M358 88v146" class="stirrer-rod"/><g class="stirrer-blade" style="transform-origin:358px 226px"><path d="m340 226 36-6m-36 0 36 12"/></g><rect x="342" y="66" width="32" height="25" rx="6" class="motor-box"/><path d="M352 72v12m7-12v12m7-12v12" class="motor-vents"/><circle cx="382" cy="78" r="4" class="motor-led"/></g>
+                  <rect x="343" y="260" width="30" height="8" rx="3" class="tank-fitting"/>
+                </g>
+                <g class="machine-component" data-component="tank-2" role="button" tabindex="0" aria-label="Bồn C, xanh dương CHINJOO 035, xem trạng thái" aria-pressed="false">
+                  <rect class="component-focus" x="486" y="23" width="166" height="259" rx="15"/>
+                  <text class="tank-eyebrow" x="568" y="43">NGUYÊN LIỆU C</text>
+                  <path d="M509 105v141c0 19 118 19 118 0V105" fill="#dfeaf0" fill-opacity=".45"/>
+                  <g clip-path="url(#tank-clip-2)"><rect id="tank-fill-2" class="tank-fill channel-c" x="509" y="263" width="118" height="0"/><ellipse id="tank-surface-2" class="tank-surface channel-c" cx="568" cy="263" rx="59" ry="10" opacity="0"/><path d="M519 103v150" stroke="#fff" stroke-width="7" opacity=".28"/></g>
+                  <path d="M509 105v141c0 19 118 19 118 0V105" fill="url(#tank-glass)" stroke="#8eaebb" stroke-width="2"/>
+                  <ellipse cx="568" cy="105" rx="59" ry="12" fill="#edf5f7" stroke="#8eaebb" stroke-width="2"/>
+                  <path d="M526 138h11m-11 30h11m-11 30h11m-11 30h11" class="tank-ticks"/>
+                  <text class="tank-level" id="tank-level-2" x="577" y="194">—<tspan class="tank-percent"> %</tspan></text>
+                  <g class="stirrer" id="stirrer-2"><path d="M568 88v146" class="stirrer-rod"/><g class="stirrer-blade" style="transform-origin:568px 226px"><path d="m550 226 36-6m-36 0 36 12"/></g><rect x="552" y="66" width="32" height="25" rx="6" class="motor-box"/><path d="M562 72v12m7-12v12m7-12v12" class="motor-vents"/><circle cx="592" cy="78" r="4" class="motor-led"/></g>
+                  <rect x="553" y="260" width="30" height="8" rx="3" class="tank-fitting"/>
+                </g>
+                <g class="machine-component pump-component" data-component="pump-0" role="button" tabindex="0" aria-label="Bơm A, xem trạng thái" aria-pressed="false"><circle class="pump-focus" cx="148" cy="300" r="26"/><circle class="pump-body" cx="148" cy="300" r="18"/><path class="pump-rotor" id="pump-rotor-0" style="transform-origin:148px 300px" d="m136 300 12-8 12 8-12 8Z"/><text class="pump-label" x="102" y="305">P1</text></g>
+                <g class="machine-component pump-component" data-component="pump-1" role="button" tabindex="0" aria-label="Bơm B, xem trạng thái" aria-pressed="false"><circle class="pump-focus" cx="358" cy="286" r="26"/><circle class="pump-body" cx="358" cy="286" r="18"/><path class="pump-rotor" id="pump-rotor-1" style="transform-origin:358px 286px" d="m346 286 12-8 12 8-12 8Z"/><text class="pump-label" x="312" y="291">P2</text></g>
+                <g class="machine-component pump-component" data-component="pump-2" role="button" tabindex="0" aria-label="Bơm C, xem trạng thái" aria-pressed="false"><circle class="pump-focus" cx="568" cy="280" r="26"/><circle class="pump-body" cx="568" cy="280" r="18"/><path class="pump-rotor" id="pump-rotor-2" style="transform-origin:568px 280px" d="m556 280 12-8 12 8-12 8Z"/><text class="pump-label" x="522" y="285">P3</text></g>
+                <g class="machine-component" data-component="scale" role="button" tabindex="0" aria-label="Cốc và cân, bộ khuấy thứ tư, xem trạng thái" aria-pressed="false">
+                  <rect class="component-focus" x="704" y="223" width="158" height="226" rx="15"/>
+                  <text class="tank-eyebrow" x="783" y="242">CỐC THÀNH PHẨM</text>
+                  <g class="stirrer" id="stirrer-3"><path d="M797 295v116" class="stirrer-rod"/><g class="stirrer-blade" style="transform-origin:797px 402px"><path d="m781 402 32-6m-32 0 32 12"/></g><rect x="781" y="270" width="32" height="26" rx="6" class="motor-box"/><path d="M791 276v12m7-12v12m7-12v12" class="motor-vents"/><circle cx="825" cy="282" r="4" class="motor-led"/></g>
+                  <g clip-path="url(#cup-clip)"><rect id="cup-fill" x="736" y="435" width="94" height="0" fill="#d5bd85"/><ellipse id="cup-surface" cx="783" cy="435" rx="47" ry="6" fill="#e3cd9b" opacity="0"/></g>
+                  <path d="m736 352 12 71q35 15 70 0l12-71" fill="url(#cup-glass)" stroke="#9aa89f" stroke-width="2"/><ellipse cx="783" cy="352" rx="47" ry="7" fill="none" stroke="#9aa89f" stroke-width="2"/>
+                  <path d="m745 365 8 51" stroke="#fff" stroke-width="5" opacity=".8"/>
+                  <rect x="726" y="436" width="114" height="9" rx="4" fill="#a8b8a5"/><path d="m740 445-4 7m90-7 4 7" stroke="#6f826d" stroke-width="4"/>
+                  <rect x="750" y="439" width="66" height="20" rx="4" fill="#34483c"/><text x="783" y="453" id="scale-readout" class="scale-readout">— g</text>
+                </g>
+                <g class="delivered-labels"><text x="148" y="391" id="delivered-0">— g</text><text x="358" y="391" id="delivered-1">— g</text><text x="568" y="391" id="delivered-2">— g</text><text x="148" y="412" class="delivered-caption">ĐÃ CẤP TỪ BỒN A</text><text x="358" y="412" class="delivered-caption">ĐÃ CẤP TỪ BỒN B</text><text x="568" y="412" class="delivered-caption">ĐÃ CẤP TỪ BỒN C</text></g>
+              </svg>
+              <div class="stage-legend"><span><i class="legend-pump"></i>Bơm định lượng</span><span><i class="legend-stirrer"></i>Bộ khuấy</span><span id="animation-label">Chuyển động theo trạng thái thực</span></div>
+              <p class="color-note">Màu hiển thị là minh họa; màu sơn sau pha có thể khác.</p>
+            </div>
+            <div class="component-inspector" id="component-inspector"><span class="component-swatch" id="component-swatch"></span><div class="component-name"><strong id="component-title">Bồn A</strong><span id="component-subtitle">Nguyên liệu xanh</span></div><div class="component-details" id="component-details">Chưa có dữ liệu từ thiết bị</div></div>
+          </section>
+
+          <section class="card recipe-card" aria-labelledby="recipe-title"><div class="card-heading"><div><div class="section-kicker">THIẾT LẬP MẺ TIẾP THEO</div><h2 id="recipe-title">Công thức pha</h2></div><span class="recipe-icon"><svg class="icon"><use href="#i-sliders"/></svg></span></div>
+            <form id="recipe-form" novalidate>
+              <label class="input-label" for="total-input">Tổng khối lượng<span>1–875 g</span></label><div class="total-input-wrap"><input id="total-input" type="number" value="100" min="1" max="875" step="1" inputmode="decimal" required aria-describedby="recipe-error"><span>gram</span></div>
+              <div class="ratio-heading"><span class="input-label">Tỷ lệ khối lượng</span><button class="text-button" id="equal-ratios" type="button">Chia đều</button></div>
+              <div class="ratio-row"><span class="ingredient-symbol channel-a">A</span><label for="ratio-0">Xanh lá · 066<span id="planned-0">50 g</span></label><div class="ratio-input-wrap"><input id="ratio-0" type="number" value="50" min="0" max="100" step="0.01" inputmode="decimal" aria-label="Tỷ lệ nguyên liệu A, phần trăm khối lượng"><span>%</span></div></div>
+              <div class="ratio-row"><span class="ingredient-symbol channel-b">B</span><label for="ratio-1">Màu da · 046<span id="planned-1">30 g</span></label><div class="ratio-input-wrap"><input id="ratio-1" type="number" value="30" min="0" max="100" step="0.01" inputmode="decimal" aria-label="Tỷ lệ nguyên liệu B, phần trăm khối lượng"><span>%</span></div></div>
+              <div class="ratio-row"><span class="ingredient-symbol channel-c">C</span><label for="ratio-2">Xanh dương · 035<span id="planned-2">20 g</span></label><div class="ratio-input-wrap"><input id="ratio-2" type="number" value="20" min="0" max="100" step="0.01" inputmode="decimal" aria-label="Tỷ lệ nguyên liệu C, phần trăm khối lượng"><span>%</span></div></div>
+              <div class="recipe-composition" aria-hidden="true"><span class="channel-a" id="ratio-bar-0" style="width:50%"></span><span class="channel-b" id="ratio-bar-1" style="width:30%"></span><span class="channel-c" id="ratio-bar-2" style="width:20%"></span></div>
+              <div class="ratio-summary" id="ratio-summary"><svg class="icon"><use href="#i-check"/></svg><span>Tổng tỷ lệ <strong id="ratio-total">100%</strong></span><span>Hợp lệ</span></div>
+              <p class="form-error" id="recipe-error" role="status" hidden></p>
+              <div class="recipe-divider"></div><div class="control-buttons"><button class="button button-primary" id="start-button" type="submit" disabled><svg class="icon"><use href="#i-play"/></svg>Bắt đầu pha</button><button class="button button-stop" id="stop-button" type="button" disabled><svg class="icon"><use href="#i-stop"/></svg>Dừng</button></div>
+              <div class="secondary-controls"><button class="button button-quiet" id="tare-button" type="button" disabled><svg class="icon"><use href="#i-scale"/></svg>Trừ bì cân</button><button class="button button-quiet" id="reset-button" type="button" disabled><svg class="icon"><use href="#i-reset"/></svg>Đặt lại</button></div>
+              <p class="control-help" id="control-help">Kết nối thiết bị để gửi lệnh điều khiển.</p>
+            </form>
+          </section>
+        </div>
+
+        <div class="monitoring-grid">
+          <section class="card chart-card" aria-labelledby="chart-title"><div class="card-heading"><div><div class="section-kicker">QUAN SÁT ĐỊNH LƯỢNG</div><h2 id="chart-title">Dữ liệu cân</h2></div><div class="chart-legend"><span><i></i>Khối lượng</span><span><i></i>Mục tiêu</span></div></div><div class="chart-wrap"><svg id="weight-chart" viewBox="0 0 700 210" role="img" aria-label="Biểu đồ khối lượng theo thời gian, chưa có dữ liệu"><defs><linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8aab80" stop-opacity=".24"/><stop offset="1" stop-color="#8aab80" stop-opacity="0"/></linearGradient></defs><g id="chart-grid"></g><path id="chart-area" fill="url(#chart-gradient)"/><path id="chart-target" fill="none" stroke="#c8ae8f" stroke-width="1.5" stroke-dasharray="5 5"/><path id="chart-line" fill="none" stroke="#527b5c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle id="chart-point" r="4" fill="#527b5c" stroke="#fff" stroke-width="2" visibility="hidden"/><g id="chart-labels"></g></svg><div class="chart-empty" id="chart-empty"><span><svg class="icon"><use href="#i-pulse"/></svg></span><strong>Chưa có dữ liệu cân</strong><p>Biểu đồ sẽ xuất hiện khi thiết bị gửi dữ liệu.</p></div></div><div class="chart-stats"><div><span>Sai lệch so với mục tiêu</span><strong id="stat-error">—<small> g</small></strong></div><div><span>Bản tin đã nhận</span><strong id="stat-samples">—<small> mẫu</small></strong></div><div><span>Cập nhật gần nhất</span><strong id="stat-updated">—</strong></div></div></section>
+          <section id="activity" class="card activity-card" aria-labelledby="activity-title"><div class="card-heading"><div><div class="section-kicker">THEO DÕI SỰ KIỆN</div><h2 id="activity-title">Nhật ký hoạt động</h2></div><button class="text-button" type="button" id="clear-log" aria-label="Xóa nhật ký hiển thị">Xóa</button></div><ol class="event-log" id="event-log" aria-live="polite" aria-relevant="additions"></ol><div class="log-empty" id="log-empty"><svg class="icon"><use href="#i-log"/></svg><strong>Chưa có sự kiện</strong><p>Sự kiện kết nối và điều khiển sẽ xuất hiện tại đây.</p></div><div class="log-footer"><span class="status-dot" id="log-dot"></span><span id="log-status">Đang chờ kết nối</span><span id="log-count">0 sự kiện</span></div></section>
+        </div>
+      </section>
+      <footer class="page-footer"><span>mixlab<span class="footer-separator">/</span>Không gian vận hành</span><span id="footer-freshness">Chưa nhận dữ liệu từ thiết bị</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden><svg class="icon"><use href="#i-info"/></svg><span id="toast-text"></span><button type="button" id="close-toast" aria-label="Đóng thông báo"><svg class="icon"><use href="#i-close"/></svg></button></div>
+  <dialog class="connection-dialog" id="connection-dialog" aria-labelledby="connection-title"><div class="dialog-heading"><span class="dialog-icon"><svg class="icon"><use href="#i-link"/></svg></span><button class="icon-button" id="close-connection" aria-label="Đóng chi tiết kết nối"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="section-kicker">TÌNH TRẠNG HỆ THỐNG</div><h2 id="connection-title">Kết nối thiết bị</h2><p>Thông tin đường truyền và bản tin gần nhất.</p><dl id="connection-details"></dl><div class="dialog-note"><svg class="icon"><use href="#i-info"/></svg><span>Dữ liệu cũ vẫn được giữ để đối chiếu. Điều khiển yêu cầu kết nối với thiết bị.</span></div><button class="button button-primary" id="retry-connection" type="button"><svg class="icon"><use href="#i-reset"/></svg>Kết nối lại máy chủ</button></dialog>
+</body>
+</html>

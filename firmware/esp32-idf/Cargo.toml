@@ -1,0 +1,29 @@
+[package]
+name = "esp32-mixer-idf"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.86"
+
+# Separate workspace for ESP-IDF toolchain settings.
+[workspace]
+
+[dependencies]
+mixer-core = { path = "../mixer-core" }
+esp-idf-svc = { version = "=0.51.0", features = ["critical-section"] }
+esp-idf-hal = "=0.45.2"
+esp-idf-sys = "=0.36.1"
+critical-section = "=1.2.0"
+
+[build-dependencies]
+embuild = "=0.33.0"
+
+[profile.release]
+opt-level = "s"
+lto = "off"
+codegen-units = 1
+debug = 1
+incremental = false
+panic = "abort"
+
+[package.metadata.esp-idf-sys]
+esp_idf_components = ["esp_wifi", "esp_event", "esp_netif", "nvs_flash", "driver", "esp_timer", "lwip"]

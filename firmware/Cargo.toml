@@ -1,0 +1,21 @@
+[workspace]
+members = ["mixer-core", "virtual-device", "esp32"]
+default-members = ["mixer-core", "virtual-device"]
+resolver = "2"
+
+[profile.release]
+opt-level = "s"
+# Xtensa's Wi-Fi task switching is incompatible with ThinLTO code generation.
+lto = "off"
+codegen-units = 1
+debug = 1
+incremental = false
+
+# The radio driver requires speed optimization (2 or 3) to meet Wi-Fi timing.
+# Keep the rest of the firmware optimized for size.
+[profile.release.package.esp-wifi]
+opt-level = 3
+
+[profile.dev]
+opt-level = 1
+debug = 1

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "device_id": "integration-fixture",
+  "session_id": "boot-integration-fixture",
+  "seq": 1,
+  "uptime_ms": 1000,
+  "state": "idle",
+  "channel": null,
+  "weight_g": 0,
+  "gross_weight_g": 120,
+  "target_g": 0,
+  "levels_pct": [100, 100, 100],
+  "pumps": [0, 0, 0],
+  "stirrers": [false, false, false, false],
+  "delivered_g": [0, 0, 0],
+  "scale_valid": true,
+  "fault": null
+}
