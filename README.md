@@ -9,9 +9,9 @@ Mô hình định lượng CHINJOO **green 066 / skin 046 / blue 035** theo kh�
 | Thiết bị native Rust + backend | Hoàn tất kiểm thử mẻ 100 g, dừng và lỗi không có dòng chảy |
 | Plant C/WASM | Kiểm thử mô hình, GPIO, ADC, HX711 và framebuffer đạt |
 | ESP32 `no_std` trong Wokwi | Đã đọc cân và mức bồn từ plant; Wi-Fi chưa kết nối được, runtime gặp `IllegalInstruction` |
-| ESP32 ESP-IDF | Mã nguồn thử nghiệm chưa hoàn thiện; chưa build hoặc kiểm chứng |
+| ESP32 ESP-IDF trong Wokwi | Đạt mẻ thực 100 g qua Wi-Fi, MQTT, HTTP và hai WebSocket |
 
-Vòng ESP32 → MQTT → dashboard trong Wokwi chưa hoạt động đầy đủ. Phạm vi và kết quả kiểm thử nằm ở [docs/validation.md](docs/validation.md).
+Vòng ESP32 ESP-IDF → MQTT → dashboard trong Wokwi đã được kiểm chứng một mẻ. Phạm vi, kết quả và giới hạn nằm ở [docs/validation.md](docs/validation.md).
 
 ```mermaid
 flowchart LR
@@ -56,9 +56,10 @@ Bộ kiểm thử cần thêm Clang với target WASM, trình biên dịch C, No
 | `make build` | Build cả ba thành phần trên |
 | `make wokwi` | Build và chạy Wokwi CLI, cần `WOKWI_CLI_TOKEN` |
 | `make verify-wokwi` | Kiểm tra một ESP32 Wokwi đang trực tuyến và `idle` |
+| `make verify-idf-wokwi` | Chạy một mẻ ESP-IDF Wokwi 100 g với backend cô lập |
 | `make clean` | Xóa sản phẩm build của dự án |
 
-Hướng dẫn Wokwi: [docs/wokwi.md](docs/wokwi.md). Cấu hình firmware và phương án ESP-IDF: [firmware/README.md](firmware/README.md). Build thành công chưa xác nhận firmware hoạt động trong mô phỏng.
+Hướng dẫn Wokwi: [docs/wokwi.md](docs/wokwi.md). Cấu hình firmware ESP-IDF: [firmware/README.md](firmware/README.md).
 
 ## Phần cứng và mô hình
 

@@ -5,9 +5,9 @@
 | `mixer-core/` | Controller `no_std`, giao thức JSON và MQTT dùng chung |
 | `virtual-device/` | Thiết bị native với plant phần mềm; đã hoàn tất mẻ 100 g trong kiểm thử tích hợp |
 | `esp32/` | Firmware ESP32 classic dùng `esp-hal` và `esp-wifi`; build được, đọc cảm biến trong Wokwi, nhưng Wi-Fi chưa kết nối và runtime gặp `IllegalInstruction` |
-| `esp32-idf/` | Phương án ESP-IDF dùng Rust `std`; đang viết dở, chưa build hoặc kiểm chứng |
+| `esp32-idf/` | Firmware Rust `std`/ESP-IDF cho ESP32 classic; đã chạy một mẻ Wokwi qua Wi-Fi và MQTT |
 
-`wokwi.toml` ở thư mục gốc nạp ELF `no_std`. Vòng ESP32 → MQTT → dashboard chưa được xác nhận; xem [kết quả kiểm thử](../docs/validation.md).
+`wokwi.toml` ở thư mục gốc nạp ELF `no_std`. Runner ESP-IDF thay ELF tạm thời để kiểm chứng vòng ESP32 → MQTT → dashboard; xem [kết quả kiểm thử](../docs/validation.md).
 
 ## Build ESP32 `no_std`
 
@@ -18,7 +18,15 @@
 
 Script setup dùng espup 0.19.0 để cài toolchain Espressif Rust 1.86.0 cho ESP32. Build dùng `Cargo.lock` với `--locked`, xuất `firmware/esp32-mixer.elf`; nếu có `espflash`, script tạo thêm `.bin`. Wokwi nạp ELF trực tiếp. Kiểm thử host dùng Rust stable.
 
-Phương án ESP-IDF có workspace riêng và script `./firmware/build-idf.sh`, cần thêm toolchain ESP-IDF và linker `ldproxy`. Cấu hình ghim ESP-IDF v5.3.3; script dự kiến xuất `firmware/esp32-mixer-idf.elf`. Quy trình này chưa được build thử và chưa được chọn trong `wokwi.toml`.
+Phương án ESP-IDF có workspace riêng, ghim ESP-IDF v5.3.3 và xuất `firmware/esp32-mixer-idf.elf`. Chuẩn bị toolchain một lần rồi build firmware cho runner Wokwi bằng cấu hình đã được kiểm chứng:
+
+```sh
+bash firmware/setup-idf-tools.sh
+MQTT_PORT=1884 DEVICE_ID=mixer-idf-trial bash firmware/build-idf.sh
+make verify-idf-wokwi
+```
+
+`make verify-idf-wokwi` khởi động backend cô lập trên HTTP 8089, MQTT 1884 và MQTT-over-WebSocket 9002, đặt `STALE_AFTER=60s` và `OFFLINE_AFTER=180s`. Nó tạm thay ELF trong `wokwi.toml`, đợi simulator mở RFC2217 rồi mới kết nối UART, và luôn khôi phục cấu hình gốc. Wokwi chạy chậm hơn thời gian thực; một mẻ mất khoảng 11 phút trên máy kiểm chứng.
 
 ## Cấu hình lúc build
 

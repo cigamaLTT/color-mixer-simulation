@@ -2,9 +2,10 @@
 use esp_idf_svc::{
     eventloop::EspSystemEventLoop,
     hal::peripherals::Peripherals,
+    log::EspLogger,
     nvs::EspDefaultNvsPartition,
     sys,
-    wifi::{AuthMethod, ClientConfiguration, Configuration, EspWifi},
+    wifi::{AuthMethod, BlockingWifi, ClientConfiguration, Configuration, EspWifi},
 };
 use mixer_core::{mqtt, Device, Sensors, SCALE_STALE_MS};
 use std::{
@@ -80,6 +81,7 @@ fn connect_worker(port: u16) -> Receiver<ConnectResult> {
 }
 fn main() {
     sys::link_patches();
+    EspLogger::initialize_default();
     // Also cut outputs if a Rust panic occurs during an active batch.
     std::panic::set_hook(Box::new(|info| { outputs_off(); println!("MIXER_PANIC outputs_off {info}"); }));
     if let Err(error) = run() {
@@ -112,7 +114,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let peripherals = Peripherals::take()?;
     let event_loop = EspSystemEventLoop::take()?;
     let nvs = EspDefaultNvsPartition::take()?;
-    let mut wifi = EspWifi::new(peripherals.modem, event_loop, Some(nvs))?;
+    let mut wifi = BlockingWifi::wrap(
+        EspWifi::new(peripherals.modem, event_loop.clone(), Some(nvs))?,
+        event_loop,
+    )?;
     wifi.set_configuration(&Configuration::Client(ClientConfiguration {
         ssid: WIFI_SSID.try_into().expect("SSID at most 32 bytes"),
         password: WIFI_PASSWORD.try_into().expect("password at most 64 bytes"),
@@ -121,8 +126,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     }))?;
     wifi.start()?;
-    sys::esp!(unsafe { sys::esp_wifi_set_ps(sys::wifi_ps_type_t_WIFI_PS_NONE) })?;
-    println!("WIFI_CONNECT {:?}", wifi.connect());
+    wifi.connect()?;
+    wifi.wait_netif_up()?;
+    let ip = wifi.wifi().sta_netif().get_ip_info()?;
+    println!("WIFI_CONNECTED ip={} gateway={} subnet={}", ip.ip, ip.subnet.gateway, ip.subnet.mask);
 
     let mut sensors = Sensors::default();
     let mut have_scale = false;
@@ -161,16 +168,16 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         device.tick(now, sensors);
         apply_outputs(&device);
         let wifi_link = wifi.is_connected().unwrap_or(false);
-        let wifi_up = wifi_link && wifi.sta_netif().is_up().unwrap_or(false);
+        let wifi_up = wifi_link && wifi.wifi().sta_netif().is_up().unwrap_or(false);
         if wifi_up && !previous_wifi {
-            println!("WIFI_READY ip={}", wifi.sta_netif().get_ip_info()?.ip);
+            println!("WIFI_READY ip={}", wifi.wifi().sta_netif().get_ip_info()?.ip);
         }
         previous_wifi = wifi_up;
         let mut lost = was_connected && !device.connected;
         if !wifi_up && (stream.is_some() || device.connected) { lost = true; }
         if !wifi_link && now >= next_wifi {
             next_wifi = now + 5000;
-            println!("WIFI_RECONNECT {:?}", wifi.connect());
+            println!("WIFI_RECONNECT {:?}", wifi.wifi_mut().connect());
         }
         if let Some(result) = connecting.as_ref().map(|receiver| receiver.try_recv()) {
             match result {

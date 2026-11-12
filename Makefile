@@ -1,4 +1,4 @@
-.PHONY: help build build-host build-simulation build-esp32 run demo test test-host test-integration test-core test-simulation verify-wokwi wokwi clean
+.PHONY: help build build-host build-simulation build-esp32 run demo test test-host test-integration test-core test-simulation verify-wokwi verify-idf-wokwi wokwi clean
 
 help:
 	@printf '%s\n' \
@@ -7,6 +7,7 @@ help:
 	  'make demo              Run backend plus native Rust controller and software plant' \
 	  'make test              Unit, model, and real network integration tests' \
 	  'make verify-wokwi      Exercise an already-running actual Wokwi ESP32' \
+	  'make verify-idf-wokwi  Run one ESP-IDF Wokwi acceptance batch' \
 	  'make build-esp32       Cross-compile the actual ESP32 firmware' \
 	  'make wokwi             Run Wokwi CLI (requires WOKWI_CLI_TOKEN)' \
 	  'make clean             Remove generated project build artifacts'
@@ -44,6 +45,9 @@ test-integration: build-host
 
 verify-wokwi:
 	@python3 scripts/verify-wokwi.py $(VERIFY_WOKWI_ARGS)
+
+verify-idf-wokwi: build-host
+	@python3 scripts/run-idf-wokwi-cycle.py
 
 wokwi: build-simulation build-esp32
 	./scripts/wokwi.sh

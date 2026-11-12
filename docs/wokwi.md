@@ -1,6 +1,6 @@
 # Mô phỏng Wokwi
 
-ESP32 `no_std` đã đọc HX711 và mức bồn từ custom chip trong Wokwi. Wi-Fi chưa kết nối thành công và runtime gặp `IllegalInstruction`, nên chưa có vòng điều khiển qua MQTT/dashboard. Phương án `firmware/esp32-idf/` chưa hoàn thiện hoặc build; cấu hình Wokwi vẫn nạp firmware `no_std`.
+ESP32 `no_std` vẫn chỉ dùng cho thử GPIO/sensor. Firmware Rust `std`/ESP-IDF đã hoàn tất một mẻ Wokwi qua Wi-Fi, MQTT, backend HTTP và hai WebSocket. `wokwi.toml` mặc định giữ ELF `no_std`; runner ESP-IDF đổi nó tạm thời và khôi phục sau lượt chạy.
 
 ## Build và khởi động
 
@@ -37,9 +37,17 @@ MQTT_URL=tcp://broker.example:1883 HTTP_ADDR=127.0.0.1:8088 make run
 
 `broker.example` cần thay bằng hostname thực. Firmware dùng MQTT TCP không TLS và không xác thực broker; `MQTT_USERNAME`/`MQTT_PASSWORD` của backend không cấu hình thông tin đăng nhập cho ESP32.
 
-Sau khi khắc phục lỗi runtime, UART cần báo Wi-Fi/MQTT kết nối và dashboard phải nhận telemetry của phiên `esp32-…`. Kết nối WebSocket giữa trình duyệt và backend chỉ phản ánh đường truyền giao diện.
+Để chạy đúng cấu hình đã kiểm chứng, build ELF với device và cổng của backend cô lập, sau đó gọi runner:
 
-## Kiểm tra vòng phản hồi
+```bash
+bash firmware/setup-idf-tools.sh
+MQTT_PORT=1884 DEVICE_ID=mixer-idf-trial bash firmware/build-idf.sh
+make verify-idf-wokwi
+```
+
+Runner dùng bridge Wokwi của VS Code, khởi động backend ở `127.0.0.1:8089`, MQTT TCP 1884 và MQTT-over-WebSocket 9002. Nó đợi simulator khởi động trước khi mở RFC2217 4000: mở UART sau `stopSimulation` sẽ nhận socket bị đóng và không phải lỗi firmware. Kết quả tạm thời nằm trong `.logs/` và không được commit.
+
+## Kiểm tra vòng phản hồi thủ công
 
 Khi ESP32 trực tuyến và `idle`, cốc rỗng, mức bồn đủ và cân hợp lệ:
 

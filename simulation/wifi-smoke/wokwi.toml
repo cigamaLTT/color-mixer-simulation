@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+firmware = '../../firmware/esp32-wifi-smoke.elf'
+elf = '../../firmware/esp32-wifi-smoke.elf'
+rfc2217ServerPort = 4000

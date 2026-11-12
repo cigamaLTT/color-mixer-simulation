@@ -26,4 +26,5 @@ incremental = false
 panic = "abort"
 
 [package.metadata.esp-idf-sys]
-esp_idf_components = ["esp_wifi", "esp_event", "esp_netif", "nvs_flash", "driver", "esp_timer", "lwip"]
+# Keep the generated native entry point when limiting the component set.
+esp_idf_components = ["main", "esp_wifi", "esp_event", "esp_netif", "nvs_flash", "driver", "esp_timer", "lwip"]

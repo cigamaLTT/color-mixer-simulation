@@ -19,11 +19,20 @@ Bộ tích hợp khởi động backend/broker riêng trên các cổng ngẫu n
 
 Dashboard đã được kiểm tra bằng Chromium ở 1440 × 1100 và 390 × 844: app WebSocket kết nối, không có lỗi JavaScript hoặc tràn ngang. Khi thiếu telemetry, giao diện báo chờ dữ liệu và vô hiệu hóa bắt đầu.
 
-## ESP32 trong Wokwi — chưa đạt vòng truyền đầy đủ
+## ESP32 ESP-IDF trong Wokwi — đạt một mẻ thực tế mô phỏng (2026-11-13)
 
-Firmware `no_std` đã build thành ELF Xtensa. Khi chạy trong Wokwi, UART đã ghi nhận cân HX711 và mức ba bồn từ plant C/WASM. Wi-Fi chưa kết nối thành công; quá trình chạy gặp lỗi `IllegalInstruction`. Chưa có mẻ ESP32 hoàn tất qua MQTT và dashboard.
+Đã build `firmware/esp32-idf/` bằng ESP-IDF 5.3.3 và chạy một mẻ từ firmware Xtensa trong Wokwi. Runner tạo backend/broker riêng tại HTTP 8089, MQTT 1884 và MQTT-over-WebSocket 9002; firmware dùng `host.wokwi.internal:1884` với device `mixer-idf-trial`. UART xác nhận DHCP `10.13.37.2` và MQTT connected trước khi nhận lệnh.
 
-`firmware/esp32-idf/` chứa phương án ESP-IDF đang viết dở. Phương án này chưa được build hoặc chạy thử; `wokwi.toml` vẫn dùng firmware `no_std`.
+Lệnh đã chạy:
+
+```bash
+MQTT_PORT=1884 DEVICE_ID=mixer-idf-trial bash firmware/build-idf.sh
+make verify-idf-wokwi
+```
+
+Mẻ 100 g, tỉ lệ 50/30/20, đi qua `stirring → taring → dosing → settling → mixing → complete`. Completion telemetry giống nhau trên HTTP snapshot, app WebSocket và MQTT-over-WebSocket; lệnh MQTT có QoS 1 và không retained. Các giá trị cuối là 100.74 g tổng, lần lượt 50.05 g / 30.40 g / 20.29 g; sai số tổng 0.74 g và sai số từng kênh 0.05 g / 0.40 g / 0.29 g. Mức ba bồn giảm từ 100% xuống 94.97% / 96.97% / 97.97%, và toàn bộ bơm/khuấy tắt ở `complete`.
+
+Lượt này không chạy `--check-stop`. Mô phỏng vẫn là plant Wokwi, không xác nhận hiệu chuẩn, điện công suất hay độ tin cậy của máy thật. Trên máy kiểm chứng, 22.2 giây mô phỏng mất khoảng 11 phút thời gian thực.
 
 ## Tiêu chí nghiệm thu Wokwi
 
