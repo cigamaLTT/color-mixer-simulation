@@ -1,7 +1,7 @@
 [wokwi]
 version = 1
-firmware = 'firmware/esp32-mixer.elf'
-elf = 'firmware/esp32-mixer.elf'
+firmware = 'firmware/esp32-mixer-idf.elf'
+elf = 'firmware/esp32-mixer-idf.elf'
 rfc2217ServerPort = 4000
 
 [[chip]]

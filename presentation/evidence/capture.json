@@ -1,0 +1,329 @@
+{
+  "source": "Native Rust controller, software plant, real MQTT and dashboard WebSocket",
+  "base_url": "http://127.0.0.1:8088",
+  "device_id": "presentation-demo",
+  "recipe": {
+    "total_g": 100,
+    "ratios": [
+      50,
+      30,
+      20
+    ]
+  },
+  "speed": 1,
+  "captures": [
+    {
+      "stage": "setup",
+      "captured_at": "2026-11-12T16:40:29.931207+00:00",
+      "device": {
+        "device_id": "presentation-demo",
+        "telemetry": {
+          "schema_version": 1,
+          "device_id": "presentation-demo",
+          "session_id": "native-18e759b8f96b1c31",
+          "seq": 9,
+          "uptime_ms": 2250,
+          "state": "idle",
+          "channel": null,
+          "weight_g": 120,
+          "gross_weight_g": 120,
+          "target_g": 0,
+          "levels_pct": [
+            100,
+            100,
+            100
+          ],
+          "pumps": [
+            0,
+            0,
+            0
+          ],
+          "stirrers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "delivered_g": [
+            0,
+            0,
+            0
+          ],
+          "scale_valid": true,
+          "fault": null
+        },
+        "online": true,
+        "stale": false,
+        "last_seen": "2026-11-12T16:40:29.775260816Z"
+      }
+    },
+    {
+      "stage": "dosing",
+      "captured_at": "2026-11-12T16:40:34.055349+00:00",
+      "device": {
+        "device_id": "presentation-demo",
+        "telemetry": {
+          "schema_version": 1,
+          "device_id": "presentation-demo",
+          "session_id": "native-18e759b8f96b1c31",
+          "seq": 26,
+          "uptime_ms": 6500,
+          "state": "dosing",
+          "channel": 0,
+          "weight_g": 20.99968,
+          "gross_weight_g": 140.99968,
+          "target_g": 100,
+          "levels_pct": [
+            97.89987,
+            100,
+            100
+          ],
+          "pumps": [
+            1,
+            0,
+            0
+          ],
+          "stirrers": [
+            true,
+            false,
+            false,
+            false
+          ],
+          "delivered_g": [
+            20.99968,
+            0,
+            0
+          ],
+          "scale_valid": true,
+          "fault": null
+        },
+        "online": true,
+        "stale": false,
+        "last_seen": "2026-11-12T16:40:34.024207294Z",
+        "last_event": {
+          "type": "state_changed",
+          "state": "dosing"
+        }
+      }
+    },
+    {
+      "stage": "mixing",
+      "captured_at": "2026-11-12T16:40:43.252347+00:00",
+      "device": {
+        "device_id": "presentation-demo",
+        "telemetry": {
+          "schema_version": 1,
+          "device_id": "presentation-demo",
+          "session_id": "native-18e759b8f96b1c31",
+          "seq": 62,
+          "uptime_ms": 15500,
+          "state": "mixing",
+          "channel": null,
+          "weight_g": 100.598465,
+          "gross_weight_g": 220.59846,
+          "target_g": 100,
+          "levels_pct": [
+            94.97969,
+            96.97981,
+            97.97987
+          ],
+          "pumps": [
+            0,
+            0,
+            0
+          ],
+          "stirrers": [
+            false,
+            false,
+            false,
+            true
+          ],
+          "delivered_g": [
+            50.199234,
+            30.19954,
+            20.199692
+          ],
+          "scale_valid": true,
+          "fault": null
+        },
+        "online": true,
+        "stale": false,
+        "last_seen": "2026-11-12T16:40:43.024131897Z",
+        "last_event": {
+          "type": "state_changed",
+          "state": "mixing"
+        }
+      }
+    },
+    {
+      "stage": "complete",
+      "captured_at": "2026-11-12T16:40:46.314392+00:00",
+      "device": {
+        "device_id": "presentation-demo",
+        "telemetry": {
+          "schema_version": 1,
+          "device_id": "presentation-demo",
+          "session_id": "native-18e759b8f96b1c31",
+          "seq": 75,
+          "uptime_ms": 18750,
+          "state": "complete",
+          "channel": null,
+          "weight_g": 100.598465,
+          "gross_weight_g": 220.59846,
+          "target_g": 100,
+          "levels_pct": [
+            94.97969,
+            96.97981,
+            97.97987
+          ],
+          "pumps": [
+            0,
+            0,
+            0
+          ],
+          "stirrers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "delivered_g": [
+            50.199234,
+            30.19954,
+            20.199692
+          ],
+          "scale_valid": true,
+          "fault": null
+        },
+        "online": true,
+        "stale": false,
+        "last_seen": "2026-11-12T16:40:46.275366268Z",
+        "last_event": {
+          "type": "batch_complete",
+          "state": "complete",
+          "delivered_g": [
+            50.199234,
+            30.19954,
+            20.199692
+          ]
+        }
+      }
+    }
+  ],
+  "browser_errors": [],
+  "events": [
+    {
+      "type": "command_ack",
+      "device_id": "presentation-demo",
+      "data": {
+        "id": "45e9cb9f-49a3-4e4e-8d38-5a9e7eb92db5",
+        "device_id": "presentation-demo",
+        "status": "published",
+        "message": "Published to MQTT; awaiting device acknowledgement"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "stirring"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "id": "45e9cb9f-49a3-4e4e-8d38-5a9e7eb92db5",
+        "type": "command_ack",
+        "state": "stirring",
+        "accepted": true
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "taring"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "dosing"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "settling"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "dosing"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "settling"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "dosing"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "settling"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "mixing"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "state_changed",
+        "state": "complete"
+      }
+    },
+    {
+      "type": "event",
+      "device_id": "presentation-demo",
+      "data": {
+        "type": "batch_complete",
+        "state": "complete",
+        "delivered_g": [
+          50.199234,
+          30.19954,
+          20.199692
+        ]
+      }
+    }
+  ]
+}
